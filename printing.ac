@@ -1,3 +1,7 @@
+let age 18
+
+:marker
+
 #print hello world
 print "hello world!"
 
