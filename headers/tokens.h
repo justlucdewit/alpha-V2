@@ -13,10 +13,10 @@ enum Tokentype{
 
 class Token{
 private:
-    Tokentype type;
-    std::string value;
+    Tokentype type = alph_unkown;
+    std::string value = "";
 
-    std::string getType(){
+    std::string getTypeFromEnum(){
         switch(type){
             case alph_command: return "command";
             case alph_string: return "string";
@@ -29,7 +29,7 @@ private:
     }
 
 public:
-    Tokentype getTypeEnum(){
+    Tokentype getType(){
         return type;
     }
 
@@ -37,36 +37,82 @@ public:
         return value;
     }
 
-    void set(Tokentype t, std::string v){
+    void setType(Tokentype t){
         type = t;
+    }
+
+    void setValue(std::string v){
         value = v;
     }
 
     void debug(){
-        std::cout << "token\n  type: " << getType() << "\n  value: " << value;
+        std::cout << "Token[type=" << getTypeFromEnum() << ", value=" << value << "]\n";
+    }
+
+    Token clone(){
+        Token ret;
+        ret.value = value;
+        ret.type = type;
+        return ret;
+    }
+
+    void reset(){
+        value = "";
+        type = alph_unkown;
     }
 };
 
 std::vector<Token> lexer(std::string code){
     std::vector<Token> tokens;
+    Token currentToken;
 
-    std::string currentTokenValue = "";
-    Tokentype currentTokenType = alph_unkown;
-    int currentValueLen = 0;
+    int readingString = 0;
+    bool readingComment = false;
+
     for (int i = 0; i < code.length(); i++){
         char currentChar = code[i];
-        //std::cout << currentChar;
-        if (currentChar == ' '){
-            if (currentTokenValue != ""){
-                std::cout << currentTokenValue;
-                currentTokenValue.assign("");
-                currentValueLen = 0;
+
+        if (readingString == 0 && !readingComment){
+            if (currentChar == '\''){
+                readingString = 1;
+                continue;
+            }else if (currentChar == '"'){
+                readingString = 2;
+                continue;
+            }else if (currentChar == '#'){
+                readingComment = true;
+                continue;
             }
-        }else{
-            currentTokenValue[currentValueLen] = currentChar;
-            currentValueLen++;
+
+            if (currentChar == ' ' || currentChar == '\n'){
+                if (currentToken.getValue() != ""){
+                    //std::cout << currentToken.getValue() << "\n";
+                    tokens.push_back(currentToken.clone());
+                    currentToken.reset();
+                }
+            }else{
+                currentToken.setValue(currentToken.getValue()+currentChar);
+            }
+        }else if (readingComment){
+            if (currentChar == '\n'){
+                readingComment = false;
+            }
+        }else if (readingString == 1){
+            if (currentChar == '\''){
+                readingString = 0;
+            }else{
+                currentToken.setValue(currentToken.getValue()+currentChar);
+            }
+        }else if (readingString == 2){
+            if (currentChar == '\"'){
+                readingString = 0;
+            }else{
+                currentToken.setValue(currentToken.getValue()+currentChar);
+            }
         }
     }
+
+    std::cout << currentToken.getValue() << "\n";
 
     return tokens;
 }
