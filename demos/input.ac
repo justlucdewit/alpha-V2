@@ -1,0 +1,9 @@
+print "what is your name:"
+get name
+
+print "what is your age:"
+get age
+
+debug some random words
+
+exit 0

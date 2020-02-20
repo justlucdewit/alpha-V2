@@ -1,0 +1,7 @@
+# define the variable age with value 18
+let age "test"
+let dayOfWeek 5
+let funnyNumber 69420
+let name "Luc de Wit"
+debug #show what variables are in RAM
+exit 0 #test

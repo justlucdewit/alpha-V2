@@ -1,0 +1,1 @@
+g++ alpha.cpp -o alpha.exe

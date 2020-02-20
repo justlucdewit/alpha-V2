@@ -1,0 +1,7 @@
+let num 0
+
+print num
+more num
+goto 3
+
+exit 1

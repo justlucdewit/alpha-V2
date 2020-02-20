@@ -1,0 +1,3 @@
+#in alpha code, you exit a program by writing the keyword exit and then a number
+#indicating what the exit code is (0 means the code ran without a problem)
+exit 0
