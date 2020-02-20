@@ -18,7 +18,7 @@ bool isCommand(const std::string str){
     return false;
 }
 
-bool isNumber(std::string str){
+bool isNumber(const std::string str){
     for (int i = 0; i < str.length(); i++){
         switch(str[i]){
             case '0':continue;
@@ -95,7 +95,7 @@ std::vector<Token> lexer(std::string code){
     int readingString = 0;
     bool readingComment = false;
 
-    for (int i = 0; i < code.length(); i++){
+    for (int i = 0; i <= code.length(); i++){
         char currentChar = code[i];
 
         if (readingString == 0 && !readingComment){
@@ -112,7 +112,7 @@ std::vector<Token> lexer(std::string code){
                 continue;
             }
 
-            if (currentChar == ' ' || currentChar == '\n'){
+            if (currentChar == ' ' || currentChar == '\n' || i == code.length()){
                 if (currentToken.getValue() != ""){
                     if (currentToken.getType() == alph_unkown){
                         if (isCommand(currentToken.getValue())){
@@ -149,10 +149,6 @@ std::vector<Token> lexer(std::string code){
                 currentToken.setValue(currentToken.getValue()+currentChar);
             }
         }
-    }
-
-    if (currentToken.getValue() != ""){
-        tokens.push_back(currentToken);
     }
 
     return tokens;

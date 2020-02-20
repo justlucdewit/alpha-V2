@@ -5,6 +5,8 @@
 #include "headers/tokens.h"
 #include "headers/readfile.h"
 
+#define VERSION "2.1.1"
+
 int main(int argc, char** argv)
 {
     if (argc >= 2){
