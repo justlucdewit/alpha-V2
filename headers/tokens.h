@@ -40,6 +40,7 @@ bool isNumber(const std::string str){
 class Token{
 private:
     Tokentype type = alph_unkown;
+    int lineNumber = 0;
     std::string value = "";
 
     std::string getTypeFromEnum(){
@@ -63,12 +64,20 @@ public:
         return value;
     }
 
+    int getLineNumber(){
+        return lineNumber;
+    }
+
     void setType(Tokentype t){
         type = t;
     }
 
     void setValue(std::string v){
         value = v;
+    }
+
+    void setLineNumber(int num){
+        lineNumber = num;
     }
 
     void debug(){
@@ -79,12 +88,14 @@ public:
         Token ret;
         ret.value = value;
         ret.type = type;
+        ret.lineNumber = lineNumber;
         return ret;
     }
 
     void reset(){
         value = "";
         type = alph_unkown;
+        lineNumber = 0;
     }
 };
 
@@ -93,10 +104,15 @@ std::vector<Token> lexer(std::string code){
     Token currentToken;
 
     int readingString = 0;
+    int lineNumber = 1;
     bool readingComment = false;
 
     for (int i = 0; i <= code.length(); i++){
         char currentChar = code[i];
+
+        if (currentChar == '\n'){
+            lineNumber++;
+        }
 
         if (readingString == 0 && !readingComment){
             if (currentChar == '\''){
@@ -126,6 +142,7 @@ std::vector<Token> lexer(std::string code){
                             currentToken.setType(alph_variable);
                         }
                     }
+                    currentToken.setLineNumber(lineNumber);
                     tokens.push_back(currentToken.clone());
                     currentToken.reset();
                 }

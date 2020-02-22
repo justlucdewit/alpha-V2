@@ -1,9 +1,4 @@
 let age 18
-
-:marker
-
-#print hello world
-print "hello world!"
-
-#exit program with code 0
-exit 0
+let name "test"
+print name
+exit 0 5
