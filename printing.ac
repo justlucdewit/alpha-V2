@@ -1,4 +1,6 @@
 let age 18
 let name "test"
+
 print name
+goto 3
 exit 0 5
