@@ -1,5 +1,3 @@
-let age 18
-:loop
-print "age"
-goto loop
+print "hello"
+print "world"
 exit 0

@@ -1,6 +1,9 @@
+#ifndef TOKENS_GUARD
+#define TOKENS_GUARD 1
 #include <iostream>
 #include <string>
 #include <vector>
+#include <regex>
 
 enum Tokentype{
     alph_command,
@@ -157,12 +160,18 @@ std::vector<Token> lexer(std::string code){
         }else if (readingString == 1){
             if (currentChar == '\''){
                 readingString = 0;
+                currentToken.setLineNumber(lineNumber);
+                tokens.push_back(currentToken.clone());
+                currentToken.reset();
             }else{
                 currentToken.setValue(currentToken.getValue()+currentChar);
             }
         }else if (readingString == 2){
             if (currentChar == '\"'){
                 readingString = 0;
+                currentToken.setLineNumber(lineNumber);
+                tokens.push_back(currentToken.clone());
+                currentToken.reset();
             }else{
                 currentToken.setValue(currentToken.getValue()+currentChar);
             }
@@ -171,3 +180,5 @@ std::vector<Token> lexer(std::string code){
 
     return tokens;
 }
+
+#endif

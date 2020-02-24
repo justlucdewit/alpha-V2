@@ -1,3 +1,5 @@
+#ifndef VALIDATOR_GUARD
+#define VALIDATOR_GUARD 1
 #include <algorithm>
 #include <iostream>
 #include <vector>
@@ -61,3 +63,5 @@ void validator(std::vector<Token> tokens){
         }
     }
 }
+
+#endif
