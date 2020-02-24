@@ -56,6 +56,7 @@ private:
     }
 
 public:
+
     Tokentype getType(){
         return type;
     }

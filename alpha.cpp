@@ -1,3 +1,11 @@
+/*
+    alpha code is a project started by luc de wit
+    it was started on 12-2-2020
+    
+    it was originally meant to be a improvement on
+    the language zettacode made by joseph catanzarit
+*/
+
 #include <iostream>
 #include <vector>
 #include <string>
