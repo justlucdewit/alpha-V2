@@ -1,0 +1,6 @@
+get name
+
+:loop
+print "name"
+goto loop
+exit 0

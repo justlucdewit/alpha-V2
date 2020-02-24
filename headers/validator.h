@@ -56,6 +56,7 @@ void validator(std::vector<Token> tokens){
 
             if (std::find(allowedTypes.begin(), allowedTypes.end(), arg.getType()) == allowedTypes.end()){
                 std::cout << "[ERROR] WRONG TYPE on line " << command.getLineNumber() <<"\n";
+                exit(1);
             }
         }
     }

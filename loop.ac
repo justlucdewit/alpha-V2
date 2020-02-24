@@ -1,6 +1,7 @@
 #this program will print "hello world spam" infinitly many times
 
-print hello world spam
-goto 3 #this is a test
+:loop
+print "hello world spam"
+goto loop #this is a test
 
 exit 0

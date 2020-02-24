@@ -4,6 +4,6 @@ get name
 print "what is your age:"
 get age
 
-debug some random words
+debug
 
 exit 0

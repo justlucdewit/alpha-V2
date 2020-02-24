@@ -1,5 +1,5 @@
 let age 18
 :loop
-print age
+print "age"
 goto loop
 exit 0
