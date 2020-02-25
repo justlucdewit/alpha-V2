@@ -35,8 +35,12 @@ void validator(std::vector<Token> tokens){
         if (tokens[tokenIndex].getType() == alph_marker){
             if (tokens[tokenIndex+1].getType() != alph_command && tokens[tokenIndex+1].getType() != alph_marker){
                 std::cout << "[ERROR] :" << tokens[tokenIndex].getValue() << " is a marker, and can not have any arguments on line " << tokens[tokenIndex].getLineNumber() << "\n";
-                
                 exit(1);
+            }
+        }
+
+        if (tokens[tokenIndex].getType() == alph_marker){
+            if (tokens[tokenIndex+1].getType() != alph_command && tokens[tokenIndex+1].getType() != alph_marker){
             }
         }
 

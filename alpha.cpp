@@ -25,6 +25,7 @@ int main(int argc, char** argv)
         interpretCode(tokens);
     }else{
         std::cout << "[ERROR] not enough arguments supplied to run the program";
+        return 1;
     }
     
     return 0;
