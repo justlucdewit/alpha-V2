@@ -1,4 +1,0 @@
-let age "nine"
-get age
-debug
-exit 0

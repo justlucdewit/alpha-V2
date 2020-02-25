@@ -39,11 +39,6 @@ void validator(std::vector<Token> tokens){
             }
         }
 
-        if (tokens[tokenIndex].getType() == alph_marker){
-            if (tokens[tokenIndex+1].getType() != alph_command && tokens[tokenIndex+1].getType() != alph_marker){
-            }
-        }
-
         //look if command has right amounts of arguments
         if (argData[command.getValue()].size() != arguments.size()){
             std::cout << "[ERROR] wrong number of arguments on " << command.getValue() << " command on line " << command.getLineNumber() << "\n";

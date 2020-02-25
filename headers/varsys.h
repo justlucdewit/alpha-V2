@@ -1,9 +1,11 @@
-class Variable{
-    public:
-        const char* name;
-        union{
-            int num_value;
-            std::string str_value;
-        };
-        Tokentype type;
+#include "tokens.h"
+
+struct Variable{
+    const char* name;
+    Tokentype type;
+
+    int num_value;
+    const char* str_value;
+    
+    Variable() = default;
 };

@@ -1,9 +1,0 @@
-print "what is your name:"
-get name
-
-print "what is your age:"
-get age
-
-debug
-
-exit 0
