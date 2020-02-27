@@ -1,3 +1,5 @@
+#include <string>
+
 #include "tokens.h"
 
 struct Variable{
@@ -5,7 +7,5 @@ struct Variable{
     Tokentype type;
 
     int num_value;
-    const char* str_value;
-    
-    Variable() = default;
+    std::string str_value;
 };

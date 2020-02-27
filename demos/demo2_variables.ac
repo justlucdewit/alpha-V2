@@ -1,2 +1,4 @@
+let name "luke"
 let age 10
+debug
 exit 0
