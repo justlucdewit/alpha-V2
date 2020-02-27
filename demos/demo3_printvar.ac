@@ -1,0 +1,5 @@
+let name "luke"
+print "hello there"
+print name
+
+exit 0

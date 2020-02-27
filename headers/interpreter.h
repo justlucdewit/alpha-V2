@@ -13,7 +13,16 @@
 
 namespace alphCMDs{
     void print(ARGUMENTS){
-        std::cout << arguments[0].getValue() << "\n";
+        if (arguments[0].getType() == alph_string){
+            std::cout << arguments[0].getValue() << "\n";
+        }else if (arguments[0].getType() == alph_variable){
+            Variable printedVar = memory[arguments[0].getValue()];
+            if (printedVar.type == alph_number){
+                std::cout << printedVar.num_value;
+            }else{
+                std::cout << printedVar.str_value;
+            }
+        }
     }
 
     void exit(ARGUMENTS){
