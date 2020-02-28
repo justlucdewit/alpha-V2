@@ -1,0 +1,18 @@
+let num 0
+
+#go up
+print num
+more num
+print num
+more num
+print num
+
+#go down again
+less num
+print num
+less num
+print num
+less num
+print num
+
+exit 0

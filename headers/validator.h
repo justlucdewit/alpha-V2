@@ -12,8 +12,8 @@ void validator(std::vector<Token> tokens){
 
     std::map<std::string, std::vector<std::vector<Tokentype>>> argData;
     argData["debug"] = {};
-    argData["more"] = {{alph_variable, alph_number}};
-    argData["less"] = {{alph_variable, alph_number}};
+    argData["more"] = {{alph_variable}};
+    argData["less"] = {{alph_variable}};
     argData["goto"] = {{alph_variable}};
     argData["print"] = {{alph_string, alph_variable, alph_number}};
     argData["get"] = {{alph_variable}};
