@@ -1,7 +1,7 @@
 #ifndef INTERPRETER_GUARD
 #define INTERPRETER_GUARD 1
 
-#define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int linenr
+#define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int lineNr, int& currLine, std::map<std::string, int> markers
 
 #include <functional>
 #include <iostream>
@@ -57,9 +57,6 @@ namespace alphCMDs{
         }
     }
 
-    void alph_goto(ARGUMENTS){
-
-    }
 
     void more(ARGUMENTS){
         Variable thevar = memory[arguments[0].getValue()];
@@ -67,7 +64,7 @@ namespace alphCMDs{
             thevar.num_value++;
             memory[arguments[0].getValue()] = thevar;
         }else{
-            std::cout << "[ERROR] triend incrementing string variable on line " << linenr;
+            std::cout << "[ERROR] triend incrementing string variable on line " << lineNr;
             std::exit(1);
         }
     }
@@ -78,9 +75,13 @@ namespace alphCMDs{
             thevar.num_value--;
             memory[arguments[0].getValue()] = thevar;
         }else{
-            std::cout << "[ERROR] triend decrementing string variable on line " << linenr;
+            std::cout << "[ERROR] triend decrementing string variable on line " << lineNr;
             std::exit(1);
         }
+    }
+    
+    void alph_goto(ARGUMENTS){
+        currLine = markers[arguments[0].getValue()];
     }
 
     void get(ARGUMENTS){
@@ -90,8 +91,9 @@ namespace alphCMDs{
 
 void interpretCode(std::vector<Token> tokens){
     //create a map to store what functions to call on what command
+    std::map<std::string, int> markers;
     std::map<std::string, Variable> memory;
-    std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int)> > alph_commands;
+    std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>)> > alph_commands;
     alph_commands["print"] = alphCMDs::print;
     alph_commands["exit"] = alphCMDs::exit;
     alph_commands["let"] = alphCMDs::let;
@@ -108,6 +110,12 @@ void interpretCode(std::vector<Token> tokens){
         Token command = tokens[tokenIndex];
         std::vector<Token> arguments;
 
+        if (command.getType() == alph_marker){
+            markers[command.getValue()] = command.getLineNumber();
+            tokenIndex++;
+            continue;
+        }
+
         //gather arguments
         tokenIndex++;
         while(tokens[tokenIndex].getType() != alph_command && tokens[tokenIndex].getType() != alph_marker && tokenIndex < tokens.size()){
@@ -115,7 +123,8 @@ void interpretCode(std::vector<Token> tokens){
             tokenIndex++;
         }
 
-        alph_commands[command.getValue()](arguments, memory, command.getLineNumber());
+
+        alph_commands[command.getValue()](arguments, memory, command.getLineNumber(), tokenIndex, markers);
     }
 }
 

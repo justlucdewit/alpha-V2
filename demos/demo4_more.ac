@@ -1,18 +1,8 @@
 let num 0
 
-#go up
-print num
+:incremeant
 more num
 print num
-more num
-print num
-
-#go down again
-less num
-print num
-less num
-print num
-less num
-print num
+goto incremeant
 
 exit 0
