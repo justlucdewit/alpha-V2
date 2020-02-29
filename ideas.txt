@@ -1,0 +1,13 @@
+#logic update
+gotoif0 var[int]
+gotoifn0 var[int]
+
+#math update
+add var[int] var[int]
+sub var[int] var[int]
+mul var[int] var[int]
+div var[int] var[int]
+pow var[int] var[int]
+
+#the name
+cpy var[int] var[int]

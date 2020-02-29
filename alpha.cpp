@@ -15,7 +15,7 @@
 #include "headers/readfile.h"
 #include "headers/tokens.h"
 
-#define VERSION "alpha V2.1.2"
+#define VERSION "alpha V2.1.4"
 
 int main(int argc, char** argv)
 {
