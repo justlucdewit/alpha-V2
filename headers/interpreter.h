@@ -11,6 +11,12 @@
 #include "varsys.h"
 #include "tokens.h"
 
+namespace alphaTools{
+    void validateVar(std::string name, std::map<std::string, Variable>& memory){
+
+    }
+}
+
 namespace alphCMDs{
     void print(ARGUMENTS){
         if (arguments[0].getType() == alph_string){
@@ -20,7 +26,7 @@ namespace alphCMDs{
             if (printedVar.type == alph_number){
                 std::cout << printedVar.num_value << "\n";
             }else{
-                std::cout << printedVar.str_value << "\n";
+                std::cout << printedVar.str_value   << "\n";
             }
         }
     }
@@ -85,7 +91,8 @@ namespace alphCMDs{
     }
 
     void get(ARGUMENTS){
-
+        std::string value;
+        std::cin >> value;
     }
 }
 

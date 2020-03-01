@@ -1,0 +1,6 @@
+print "what is your name?"
+get name
+print ""
+print "your name is:"
+print ""
+print name

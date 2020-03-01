@@ -1,7 +1,8 @@
-let num 1
+let num 0
 
-print num
+:loop
 more num
 print num
+goto loop
 
 exit 0
