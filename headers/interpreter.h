@@ -8,24 +8,9 @@
 #include <vector>
 #include <map>
 
+#include "alphaTools.h"
 #include "varsys.h"
 #include "tokens.h"
-
-namespace alphaTools{
-    void validateVar(std::string name, std::map<std::string, Variable> memory){
-        if (memory.find(name) == memory.end()){
-            std::cout << "[ERROR] variable named " << name << "was not found";
-            exit(1);
-        }
-    }
-
-    void validateMark(std::string name, std::map<std::string, int> markers){
-        if (markers.find(name) == markers.end()){
-            std::cout << "[ERROR] marker named " << name << "was not found";
-            exit(1);
-        }
-    }
-}
 
 namespace alphCMDs{
     void print(ARGUMENTS){
@@ -118,6 +103,9 @@ void interpretCode(std::vector<Token> tokens){
     std::map<std::string, int> markers;
     std::map<std::string, Variable> memory;
     std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>)> > alph_commands;
+
+
+
     alph_commands["print"] = alphCMDs::print;
     alph_commands["exit"] = alphCMDs::exit;
     alph_commands["let"] = alphCMDs::let;
@@ -151,5 +139,4 @@ void interpretCode(std::vector<Token> tokens){
         alph_commands[command.getValue()](arguments, memory, command.getLineNumber(), tokenIndex, markers);
     }
 }
-
 #endif

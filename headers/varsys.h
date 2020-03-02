@@ -1,5 +1,6 @@
+#ifndef VARSYSGUARD
+#define VARSYSGUARD 1
 #include <string>
-
 #include "tokens.h"
 
 struct Variable{
@@ -9,3 +10,5 @@ struct Variable{
     int num_value;
     std::string str_value;
 };
+
+#endif
