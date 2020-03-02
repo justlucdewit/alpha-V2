@@ -13,7 +13,6 @@
 
 namespace alphaTools{
     void validateVar(std::string name, std::map<std::string, Variable> memory){
-        std::cout << "testing";
         if (memory.find(name) == memory.end()){
             std::cout << "[ERROR] variable named " << name << "was not found";
             exit(1);
@@ -21,7 +20,6 @@ namespace alphaTools{
     }
 
     void validateMark(std::string name, std::map<std::string, int> markers){
-        std::cout << "testing";
         if (markers.find(name) == markers.end()){
             std::cout << "[ERROR] marker named " << name << "was not found";
             exit(1);
@@ -108,8 +106,10 @@ namespace alphCMDs{
     }
 
     void get(ARGUMENTS){
-        std::string value;
-        std::cin >> value;
+        Variable value;
+        value.type = alph_string;
+        std::cin >> value.str_value;
+        memory[arguments[0].getValue()] = value;
     }
 }
 
