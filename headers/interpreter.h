@@ -12,8 +12,20 @@
 #include "tokens.h"
 
 namespace alphaTools{
-    void validateVar(std::string name, std::map<std::string, Variable>& memory){
+    void validateVar(std::string name, std::map<std::string, Variable> memory){
+        std::cout << "testing";
+        if (memory.find(name) == memory.end()){
+            std::cout << "[ERROR] variable named " << name << "was not found";
+            exit(1);
+        }
+    }
 
+    void validateMark(std::string name, std::map<std::string, int> markers){
+        std::cout << "testing";
+        if (markers.find(name) == markers.end()){
+            std::cout << "[ERROR] marker named " << name << "was not found";
+            exit(1);
+        }
     }
 }
 
@@ -22,6 +34,7 @@ namespace alphCMDs{
         if (arguments[0].getType() == alph_string){
             std::cout << arguments[0].getValue() << "\n";
         }else if (arguments[0].getType() == alph_variable){
+            alphaTools::validateVar(arguments[0].getValue(), memory);
             Variable printedVar = memory[arguments[0].getValue()];
             if (printedVar.type == alph_number){
                 std::cout << printedVar.num_value << "\n";
@@ -63,9 +76,10 @@ namespace alphCMDs{
         }
     }
 
-
     void more(ARGUMENTS){
+        alphaTools::validateVar(arguments[0].getValue(), memory);
         Variable thevar = memory[arguments[0].getValue()];
+
         if (thevar.type == alph_number){
             thevar.num_value++;
             memory[arguments[0].getValue()] = thevar;
@@ -76,7 +90,9 @@ namespace alphCMDs{
     }
 
     void less(ARGUMENTS){
+        alphaTools::validateVar(arguments[0].getValue(), memory);
         Variable thevar = memory[arguments[0].getValue()];
+
         if (thevar.type == alph_number){
             thevar.num_value--;
             memory[arguments[0].getValue()] = thevar;
@@ -87,6 +103,7 @@ namespace alphCMDs{
     }
     
     void alph_goto(ARGUMENTS){
+        alphaTools::validateMark(arguments[0].getValue(), markers);
         currLine = markers[arguments[0].getValue()];
     }
 
