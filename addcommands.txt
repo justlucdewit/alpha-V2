@@ -1,0 +1,2 @@
+- add the command in headers/tokens.h
+- add the command args in headers/validator.h

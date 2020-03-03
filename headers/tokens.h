@@ -15,7 +15,7 @@ enum Tokentype{
 };
 
 bool isCommand(const std::string str){
-    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug"){
+    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="ifis" || str=="ifnis"){
         return true;
     }
     return false;

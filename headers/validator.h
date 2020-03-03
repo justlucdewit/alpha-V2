@@ -19,6 +19,8 @@ void validator(std::vector<Token> tokens){
     argData["get"] = {{alph_variable}};
     argData["exit"] = {{alph_number, alph_variable}};
     argData["let"] = {{alph_variable}, {alph_string, alph_number}};
+    argData["ifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}};
+    argData["ifnis"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}};
 
     while(tokenIndex < tokens.size()){
         //get command

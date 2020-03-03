@@ -1,1 +1,1 @@
-g++ alpha.cpp -o alpha.exe
+g++ alpha.cpp -o alpha.exe -std=c++17

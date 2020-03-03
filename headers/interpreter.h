@@ -5,6 +5,7 @@
 
 #include <functional>
 #include <iostream>
+#include <variant>
 #include <vector>
 #include <map>
 
@@ -96,6 +97,15 @@ namespace alphCMDs{
         std::cin >> value.str_value;
         memory[arguments[0].getValue()] = value;
     }
+
+    void ifis(ARGUMENTS){
+        std::variant<int, std::string> value1;
+        std::variant<int, std::string> value2;
+    }
+
+    void ifnis(ARGUMENTS){
+
+    }
 }
 
 void interpretCode(std::vector<Token> tokens){
@@ -103,8 +113,6 @@ void interpretCode(std::vector<Token> tokens){
     std::map<std::string, int> markers;
     std::map<std::string, Variable> memory;
     std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>)> > alph_commands;
-
-
 
     alph_commands["print"] = alphCMDs::print;
     alph_commands["exit"] = alphCMDs::exit;
