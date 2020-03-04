@@ -21,12 +21,11 @@ namespace alphaTools{
 
     int getTokenIndex(int line, std::vector<Token> tokens){
         int linesfound = 0;
-
         for (int i = 0; i <= tokens.size(); i++){
             Token currtoken = tokens[i];
             if (currtoken.getType() == alph_command){
                 linesfound++;
-                if (linesfound == line-1){
+                if (i == line){
                     return i;
                 }
             }

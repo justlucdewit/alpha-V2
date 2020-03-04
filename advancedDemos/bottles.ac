@@ -1,0 +1,32 @@
+let bottles 99
+
+goto next
+
+:lastTwo
+print "2 bottles of beer on the wall, 2 bottles of beer.\n Take one down and pass it around, 1 bottle of beer on the wall.\n\n"
+less bottles
+goto continue1
+
+:last
+print "1 bottle of beer on the wall, 1 bottle of beer.\nTake one down and pass it around, no more bottles of beer on the wall.\n\n"
+goto continue2
+
+:sing
+print bottles
+print " bottles of beer on the wall, "
+print bottles
+print " bottles of beer,\nTake one down and pass it around, "
+less bottles
+print bottles
+print " bottles of beer on the wall\n\n"
+
+:next
+gotoifisnt bottles 2 sing
+
+gotoifis bottles 2 lastTwo
+:continue1
+
+gotoifis bottles 1 last
+:continue2
+
+exit 0
