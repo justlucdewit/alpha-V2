@@ -1,0 +1,9 @@
+let num 0
+
+:countToTwenty
+more num
+print num
+print "\n"
+gotoifisnt num 20 countToTwenty
+
+exit 0

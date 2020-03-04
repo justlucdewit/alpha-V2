@@ -1,7 +1,7 @@
 #ifndef INTERPRETER_GUARD
 #define INTERPRETER_GUARD 1
 
-#define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int lineNr, int& currLine, std::map<std::string, int> markers
+#define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int lineNr, int& currLine, std::map<std::string, int> markers, std::vector<Token> tokens
 
 #include <functional>
 #include <iostream>
@@ -16,14 +16,14 @@
 namespace alphCMDs{
     void print(ARGUMENTS){
         if (arguments[0].getType() == alph_string){
-            std::cout << arguments[0].getValue() << "\n";
+            std::cout << arguments[0].getValue();
         }else if (arguments[0].getType() == alph_variable){
             alphaTools::validateVar(arguments[0].getValue(), memory);
             Variable printedVar = memory[arguments[0].getValue()];
             if (printedVar.type == alph_number){
-                std::cout << printedVar.num_value << "\n";
+                std::cout << printedVar.num_value;
             }else{
-                std::cout << printedVar.str_value   << "\n";
+                std::cout << printedVar.str_value;
             }
         }
     }
@@ -88,7 +88,7 @@ namespace alphCMDs{
     
     void alph_goto(ARGUMENTS){
         alphaTools::validateMark(arguments[0].getValue(), markers);
-        currLine = markers[arguments[0].getValue()];
+        currLine = alphaTools::getTokenIndex(markers[arguments[0].getValue()], tokens);
     }
 
     void get(ARGUMENTS){
@@ -98,21 +98,83 @@ namespace alphCMDs{
         memory[arguments[0].getValue()] = value;
     }
 
-    void ifis(ARGUMENTS){
-        std::variant<int, std::string> value1;
-        std::variant<int, std::string> value2;
+    void gotoifis(ARGUMENTS){
+        std::variant<int, std::string> value1, value2;
+        alphaTools::validateMark(arguments[2].getValue(), markers);
+
+        if (arguments[0].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[0].getValue()];
+            if (tmpvar.type == alph_string){
+                value1 = tmpvar.str_value;
+            }else{
+                value1 = tmpvar.num_value;
+            }
+        }else if(arguments[0].getType() == alph_number){
+            value1 = std::stoi(arguments[0].getValue());
+        }else{//alph_string
+            value1 = arguments[0].getValue();
+        }
+
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_string){
+                value2 = tmpvar.str_value;
+            }else{
+                value2 = tmpvar.num_value;
+            }
+        }else if(arguments[1].getType() == alph_number){
+            value2 = std::stoi(arguments[1].getValue());
+        }else{//alph_string
+            value2 = arguments[1].getValue();
+        }
+
+        if (value1 == value2){
+            currLine = alphaTools::getTokenIndex(markers[arguments[2].getValue()], tokens);
+        }
     }
 
-    void ifnis(ARGUMENTS){
+    void gotoifisnt(ARGUMENTS){
+        std::variant<int, std::string> value1, value2;
+        alphaTools::validateMark(arguments[2].getValue(), markers);
 
+        if (arguments[0].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[0].getValue()];
+            if (tmpvar.type == alph_string){
+                value1 = tmpvar.str_value;
+            }else{
+                value1 = tmpvar.num_value;
+            }
+        }else if(arguments[0].getType() == alph_number){
+            value1 = std::stoi(arguments[0].getValue());
+        }else{//alph_string
+            value1 = arguments[0].getValue();
+        }
+
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_string){
+                value2 = tmpvar.str_value;
+            }else{
+                value2 = tmpvar.num_value;
+            }
+        }else if(arguments[1].getType() == alph_number){
+            value2 = std::stoi(arguments[1].getValue());
+        }else{//alph_string
+            value2 = arguments[1].getValue();
+        }
+
+        if (value1 != value2){
+            currLine = alphaTools::getTokenIndex(markers[arguments[2].getValue()], tokens);
+        }
     }
 }
 
-void interpretCode(std::vector<Token> tokens){
+void interpretCode(std::vector<Token> tokens, std::map<std::string, int> markers){
     //create a map to store what functions to call on what command
-    std::map<std::string, int> markers;
     std::map<std::string, Variable> memory;
-    std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>)> > alph_commands;
+    std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>, std::vector<Token>)> > alph_commands;
+
+    //std::cout << "got " << markers.size() << " markers, first one is at line " << alphaTools::getTokenIndex(markers["loop"], tokens) << "\n";
 
     alph_commands["print"] = alphCMDs::print;
     alph_commands["exit"] = alphCMDs::exit;
@@ -122,19 +184,16 @@ void interpretCode(std::vector<Token> tokens){
     alph_commands["less"] = alphCMDs::less;
     alph_commands["get"] = alphCMDs::get;
     alph_commands["debug"] = alphCMDs::debug;
+    alph_commands["gotoifis"] = alphCMDs::gotoifis;
+    alph_commands["gotoifisnt"] = alphCMDs::gotoifisnt;
 
     //main program loop
     int tokenIndex = 0;
     while(tokenIndex < tokens.size()){
         //gather command
         Token command = tokens[tokenIndex];
+        //std::cout << "now at command: " << command.getValue() << "\n";
         std::vector<Token> arguments;
-
-        if (command.getType() == alph_marker){
-            markers[command.getValue()] = command.getLineNumber();
-            tokenIndex++;
-            continue;
-        }
 
         //gather arguments
         tokenIndex++;
@@ -143,8 +202,7 @@ void interpretCode(std::vector<Token> tokens){
             tokenIndex++;
         }
 
-
-        alph_commands[command.getValue()](arguments, memory, command.getLineNumber(), tokenIndex, markers);
+        alph_commands[command.getValue()](arguments, memory, command.getLineNumber(), tokenIndex, markers, tokens);
     }
 }
 #endif

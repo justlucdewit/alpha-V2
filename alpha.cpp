@@ -11,11 +11,12 @@
 #include <string>
 
 #include "headers/interpreter.h"
+#include "headers/getmarkers.h"
 #include "headers/validator.h"
 #include "headers/readfile.h"
 #include "headers/tokens.h"
 
-#define VERSION "alpha V2.1.4"
+#define VERSION "alpha V2.2.0"
 
 int main(int argc, char** argv)
 {
@@ -23,8 +24,10 @@ int main(int argc, char** argv)
         if (strcmp(argv[1], "run") == 0){
             if (argc >= 3){
                 std::vector<Token> tokens = lexer(readFile(argv[2]));
+                std::map<std::string, int> markers = getMarkers(tokens);
+                
                 validator(tokens);
-                interpretCode(tokens);
+                interpretCode(tokens, markers);
                 return 1;
             }else{
                 std::cout << "[ERROR] you need to specify what program to run, for example: alpha run example.ac";

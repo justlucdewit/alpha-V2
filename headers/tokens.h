@@ -15,7 +15,7 @@ enum Tokentype{
 };
 
 bool isCommand(const std::string str){
-    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="ifis" || str=="ifnis"){
+    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="gotoifis" || str=="gotoifisnt"){
         return true;
     }
     return false;
@@ -103,6 +103,17 @@ public:
     }
 };
 
+std::string substrReplace(std::string data, std::string toSearch, std::string replaceStr){
+	size_t pos = data.find(toSearch);
+	while( pos != std::string::npos)
+	{
+		data.replace(pos, toSearch.size(), replaceStr);
+		pos =data.find(toSearch, pos + replaceStr.size());
+	}
+
+    return data;
+}
+
 std::vector<Token> lexer(std::string code){
     std::vector<Token> tokens;
     Token currentToken;
@@ -113,10 +124,6 @@ std::vector<Token> lexer(std::string code){
 
     for (int i = 0; i <= code.length(); i++){
         char currentChar = code[i];
-
-        if (currentChar == '\n'){
-            lineNumber++;
-        }
 
         if (readingString == 0 && !readingComment){
             if (currentChar == '\''){
@@ -140,6 +147,7 @@ std::vector<Token> lexer(std::string code){
                         }else if(currentToken.getValue()[0] == ':'){
                             currentToken.setType(alph_marker);
                             currentToken.setValue(currentToken.getValue().erase(0, 1));
+                            lineNumber--;
                         }else if(isNumber(currentToken.getValue())){
                             currentToken.setType(alph_number);
                         }else{
@@ -149,6 +157,7 @@ std::vector<Token> lexer(std::string code){
                     currentToken.setLineNumber(lineNumber);
                     tokens.push_back(currentToken.clone());
                     currentToken.reset();
+                    lineNumber++;
                 }
             }else{
                 currentToken.setValue(currentToken.getValue()+currentChar);
@@ -160,18 +169,40 @@ std::vector<Token> lexer(std::string code){
         }else if (readingString == 1){
             if (currentChar == '\''){
                 readingString = 0;
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\n", "\n"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\t", "\t"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\a", "\a"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\b", "\b"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\r", "\r"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\v", "\v"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\\", "\\"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\'", "\'"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\"", "\""));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\'", "\'"));
                 currentToken.setLineNumber(lineNumber);
                 tokens.push_back(currentToken.clone());
                 currentToken.reset();
+                lineNumber++;
             }else{
                 currentToken.setValue(currentToken.getValue()+currentChar);
             }
         }else if (readingString == 2){
             if (currentChar == '\"'){
                 readingString = 0;
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\n", "\n"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\t", "\t"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\a", "\a"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\b", "\b"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\r", "\r"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\v", "\v"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\\", "\\"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\'", "\'"));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\"", "\""));
+                currentToken.setValue(substrReplace(currentToken.getValue(), "\\\'", "\'"));
                 currentToken.setLineNumber(lineNumber);
                 tokens.push_back(currentToken.clone());
                 currentToken.reset();
+                lineNumber++;
             }else{
                 currentToken.setValue(currentToken.getValue()+currentChar);
             }
