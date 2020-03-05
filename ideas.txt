@@ -1,13 +1,15 @@
-#logic update
-gotoifis var[str/int] var[str/int]
-gotoifnis var[str/int] var[str/int]
-
-#math update
+#math update (v2.2.1)
 add var[int] var[int]
 sub var[int] var[int]
 mul var[int] var[int]
 div var[int] var[int]
 pow var[int] var[int]
+mod var[int] var[int]
 
-#the name
+#var minipulation
 cpy var[int] var[int]
+del var
+cat var[str] str/var[str]
+
+gotoifisgtr var[int] var[int] marker
+gotoifislss var[int] var[int] marker

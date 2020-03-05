@@ -7,7 +7,7 @@ struct Variable{
     const char* name;
     Tokentype type;
 
-    int num_value;
+    long double num_value;
     std::string str_value;
 };
 

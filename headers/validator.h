@@ -21,6 +21,14 @@ void validator(std::vector<Token> tokens){
     argData["let"] = {{alph_variable}, {alph_string, alph_number}};
     argData["gotoifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
     argData["gotoifisnt"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    argData["add"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["sub"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["mul"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["div"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["pow"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["mod"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["gotoifislss"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    argData["gotoifisgtr"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
 
     while(tokenIndex < tokens.size()){
         //get command

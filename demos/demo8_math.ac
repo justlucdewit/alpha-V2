@@ -1,0 +1,43 @@
+let num1 -10
+let num2 20
+print "10 + 20 = "
+add num1 num2
+print num1
+print "\n"
+
+let num1 10
+let num2 20
+print "10 - 20 = "
+sub num1 num2
+print num1
+print "\n"
+
+let num1 10
+let num2 20
+print "10 * 20 = "
+mul num1 num2
+print num1
+print "\n"
+
+let num1 10
+let num2 20
+print "10 / 20 = "
+div num1 num2
+print num1
+print "\n"
+
+let num1 10
+let num2 20
+print "10 % 20 = "
+mod num1 num2
+print num1
+print "\n"
+
+let num1 10
+let num2 20
+print "10 ** 20 = "
+pow num1 num2
+print num1
+print "\n"
+
+exit 0

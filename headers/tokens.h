@@ -15,7 +15,7 @@ enum Tokentype{
 };
 
 bool isCommand(const std::string str){
-    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="gotoifis" || str=="gotoifisnt"){
+    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="gotoifis" || str=="gotoifisnt" || str=="add" || str=="sub" || str=="mul" || str=="div" || str=="pow" || str=="mod" || str=="gotoifisgtr" || str=="gotoifislss"){
         return true;
     }
     return false;
@@ -34,6 +34,7 @@ bool isNumber(const std::string str){
             case '7':continue;
             case '8':continue;
             case '9':continue;
+            case '-':continue;
             default:return false;
         }
     }

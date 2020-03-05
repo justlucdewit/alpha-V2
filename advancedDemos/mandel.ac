@@ -1,0 +1,110 @@
+#rendering values
+let xpos 0
+let ypos 0
+let imgwidth 80
+let imgheight 20
+
+let minx -2
+let maxx 3
+div maxx 2
+let miny -1
+let maxy 1
+
+#define coordinate variables
+let real 0
+add real minx
+
+let imag 0
+add imag miny
+
+#rendering settings
+let maxitter 100
+
+#create the incrementor, wich defines how 
+#accurate it will render
+let xincrement 0
+add xincrement maxx
+sub xincrement minx
+div xincrement imgwidth
+
+let yincrement 0
+add yincrement maxy
+sub yincrement miny
+div yincrement imgheight
+
+goto nextcol
+
+#main nested loop
+:nextrow
+add imag yincrement
+let real -2
+print "\n"
+
+:nextcol
+add real xincrement
+goto printnum
+:back
+
+gotoifislss real maxx nextcol
+gotoifislss imag maxy nextrow
+
+exit 0
+
+#this section is to print a space or a #
+#depending if real+(imag)i is part of the
+#mandelbrot set
+:printnum
+let i 0 #number of itterations
+let z 0
+let nextreal 0
+let nextimag 0
+add nextreal real
+add nextimag imag
+:comptest_loop
+#calculate a*a
+let aa 0
+add aa nextreal
+mul aa aa
+
+#calculate b*b
+let subaa 0
+add subaa nextimag
+mul subaa subaa
+
+#get final aa
+sub aa subaa
+
+#get bb
+let bb 2
+mul bb nextimag
+mul bb nextreal
+
+#bb is nextimag
+#aa is nextreal
+
+let nextreal 0
+add nextreal aa
+add nextreal real
+
+let nextimag 0
+add nextimag bb
+add nextimag imag
+
+let magnitude 0
+add magnitude nextreal
+add magnitude nextimag
+
+gotoifisgtr magnitude 16 printfilled
+gotoifislss magnitude -16 printfilled 
+
+more i #goto next itteration
+gotoifislss i maxitter comptest_loop
+goto printspace
+
+:printfilled
+print " "
+goto back
+
+:printspace
+print "#"
+goto back

@@ -7,6 +7,7 @@
 #include <iostream>
 #include <variant>
 #include <vector>
+#include <cmath>
 #include <map>
 
 #include "alphaTools.h"
@@ -167,6 +168,178 @@ namespace alphCMDs{
             currLine = alphaTools::getTokenIndex(markers[arguments[2].getValue()], tokens);
         }
     }
+
+    void add(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+
+        memory[arguments[0].getValue()].num_value += value;
+    }
+
+    void sub(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+        
+        memory[arguments[0].getValue()].num_value -= value;
+    }
+
+    void mul(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+        
+        memory[arguments[0].getValue()].num_value *= value;
+    }
+
+    void div(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+        
+        memory[arguments[0].getValue()].num_value /= value;
+    }
+
+    void pow(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+        
+        memory[arguments[0].getValue()].num_value = std::pow(memory[arguments[0].getValue()].num_value, value);
+    }
+
+    void mod(ARGUMENTS){
+        long double value;
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_number){
+                value = tmpvar.num_value;
+            }else{
+                std::cout << "[ERROR] math between number and string is not allowed";
+                std::exit(1);
+            }
+        }else{
+            value = std::stoi(arguments[1].getValue());
+        }
+        
+        memory[arguments[0].getValue()].num_value = std::fmod(memory[arguments[0].getValue()].num_value, value);
+    }
+
+    void gotoifislss(ARGUMENTS){
+        std::variant<int, std::string> value1, value2;
+        alphaTools::validateMark(arguments[2].getValue(), markers);
+
+        if (arguments[0].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[0].getValue()];
+            if (tmpvar.type == alph_string){
+                value1 = tmpvar.str_value;
+            }else{
+                value1 = tmpvar.num_value;
+            }
+        }else if(arguments[0].getType() == alph_number){
+            value1 = std::stoi(arguments[0].getValue());
+        }else{//alph_string
+            value1 = arguments[0].getValue();
+        }
+
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_string){
+                value2 = tmpvar.str_value;
+            }else{
+                value2 = tmpvar.num_value;
+            }
+        }else if(arguments[1].getType() == alph_number){
+            value2 = std::stoi(arguments[1].getValue());
+        }else{//alph_string
+            value2 = arguments[1].getValue();
+        }
+
+        if (value1 < value2){
+            currLine = alphaTools::getTokenIndex(markers[arguments[2].getValue()], tokens);
+        }
+    }
+
+    void gotoifisgtr(ARGUMENTS){
+        std::variant<int, std::string> value1, value2;
+        alphaTools::validateMark(arguments[2].getValue(), markers);
+
+        if (arguments[0].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[0].getValue()];
+            if (tmpvar.type == alph_string){
+                value1 = tmpvar.str_value;
+            }else{
+                value1 = tmpvar.num_value;
+            }
+        }else if(arguments[0].getType() == alph_number){
+            value1 = std::stoi(arguments[0].getValue());
+        }else{//alph_string
+            value1 = arguments[0].getValue();
+        }
+
+        if (arguments[1].getType() == alph_variable){
+            Variable tmpvar = memory[arguments[1].getValue()];
+            if (tmpvar.type == alph_string){
+                value2 = tmpvar.str_value;
+            }else{
+                value2 = tmpvar.num_value;
+            }
+        }else if(arguments[1].getType() == alph_number){
+            value2 = std::stoi(arguments[1].getValue());
+        }else{//alph_string
+            value2 = arguments[1].getValue();
+        }
+
+        if (value1 > value2){
+            currLine = alphaTools::getTokenIndex(markers[arguments[2].getValue()], tokens);
+        }
+    }
 }
 
 void interpretCode(std::vector<Token> tokens, std::map<std::string, int> markers){
@@ -186,6 +359,14 @@ void interpretCode(std::vector<Token> tokens, std::map<std::string, int> markers
     alph_commands["debug"] = alphCMDs::debug;
     alph_commands["gotoifis"] = alphCMDs::gotoifis;
     alph_commands["gotoifisnt"] = alphCMDs::gotoifisnt;
+    alph_commands["add"] = alphCMDs::add;
+    alph_commands["sub"] = alphCMDs::sub;
+    alph_commands["mul"] = alphCMDs::mul;
+    alph_commands["div"] = alphCMDs::div;
+    alph_commands["pow"] = alphCMDs::pow;
+    alph_commands["mod"] = alphCMDs::mod;
+    alph_commands["gotoifislss"] = alphCMDs::gotoifislss;
+    alph_commands["gotoifisgtr"] = alphCMDs::gotoifisgtr;
 
     //main program loop
     int tokenIndex = 0;
