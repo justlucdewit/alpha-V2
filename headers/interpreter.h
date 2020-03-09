@@ -14,53 +14,12 @@
 #include "varsys.h"
 #include "tokens.h"
 
+#include "../commands/print.h"
+#include "../commands/exit.h"
+#include "../commands/let.h"
+#include "../commands/debug.h"
+
 namespace alphCMDs{
-    void print(ARGUMENTS){
-        if (arguments[0].getType() == alph_string){
-            std::cout << arguments[0].getValue();
-        }else if (arguments[0].getType() == alph_variable){
-            alphaTools::validateVar(arguments[0].getValue(), memory);
-            Variable printedVar = memory[arguments[0].getValue()];
-            if (printedVar.type == alph_number){
-                std::cout << printedVar.num_value;
-            }else{
-                std::cout << printedVar.str_value;
-            }
-        }
-    }
-
-    void exit(ARGUMENTS){
-        std::exit(std::atoi(arguments[0].getValue().c_str()));
-    }
-
-    void let(ARGUMENTS){
-        struct Variable newvar;
-        newvar.name = arguments[0].getValue().c_str();
-        
-        if (arguments[1].getType() == alph_string){
-            newvar.type = alph_string;
-            newvar.str_value = arguments[1].getValue();
-        }else{
-            newvar.type = alph_number;
-            newvar.num_value = std::atoi(arguments[1].getValue().c_str());
-        }
-
-        memory[arguments[0].getValue()] = newvar;
-    }
-
-    void debug(ARGUMENTS){
-        std::map<std::string, int>::iterator it;
-
-        for (auto it = memory.begin(); it != memory.end(); it++ )
-        {   
-            if (it->second.type == alph_number){
-                std::cout << it->first << " = " << it->second.num_value << "\n";
-            }else{
-                std::cout << it->first << " = \"" << it->second.str_value << "\"\n";
-            }
-        }
-    }
-
     void more(ARGUMENTS){
         alphaTools::validateVar(arguments[0].getValue(), memory);
         Variable thevar = memory[arguments[0].getValue()];
@@ -111,7 +70,7 @@ namespace alphCMDs{
                 value1 = tmpvar.num_value;
             }
         }else if(arguments[0].getType() == alph_number){
-            value1 = std::stoi(arguments[0].getValue());
+            value1 = std::stold(arguments[0].getValue());
         }else{//alph_string
             value1 = arguments[0].getValue();
         }
@@ -124,7 +83,7 @@ namespace alphCMDs{
                 value2 = tmpvar.num_value;
             }
         }else if(arguments[1].getType() == alph_number){
-            value2 = std::stoi(arguments[1].getValue());
+            value2 = std::stold(arguments[1].getValue());
         }else{//alph_string
             value2 = arguments[1].getValue();
         }
@@ -146,7 +105,7 @@ namespace alphCMDs{
                 value1 = tmpvar.num_value;
             }
         }else if(arguments[0].getType() == alph_number){
-            value1 = std::stoi(arguments[0].getValue());
+            value1 = std::stold(arguments[0].getValue());
         }else{//alph_string
             value1 = arguments[0].getValue();
         }
@@ -159,7 +118,7 @@ namespace alphCMDs{
                 value2 = tmpvar.num_value;
             }
         }else if(arguments[1].getType() == alph_number){
-            value2 = std::stoi(arguments[1].getValue());
+            value2 = std::stold(arguments[1].getValue());
         }else{//alph_string
             value2 = arguments[1].getValue();
         }
@@ -180,7 +139,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
 
         memory[arguments[0].getValue()].num_value += value;
@@ -197,7 +156,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
         
         memory[arguments[0].getValue()].num_value -= value;
@@ -214,7 +173,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
         
         memory[arguments[0].getValue()].num_value *= value;
@@ -231,7 +190,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
         
         memory[arguments[0].getValue()].num_value /= value;
@@ -248,7 +207,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
         
         memory[arguments[0].getValue()].num_value = std::pow(memory[arguments[0].getValue()].num_value, value);
@@ -265,7 +224,7 @@ namespace alphCMDs{
                 std::exit(1);
             }
         }else{
-            value = std::stoi(arguments[1].getValue());
+            value = std::stold(arguments[1].getValue());
         }
         
         memory[arguments[0].getValue()].num_value = std::fmod(memory[arguments[0].getValue()].num_value, value);
@@ -283,7 +242,7 @@ namespace alphCMDs{
                 value1 = tmpvar.num_value;
             }
         }else if(arguments[0].getType() == alph_number){
-            value1 = std::stoi(arguments[0].getValue());
+            value1 = std::stold(arguments[0].getValue());
         }else{//alph_string
             value1 = arguments[0].getValue();
         }
@@ -296,7 +255,7 @@ namespace alphCMDs{
                 value2 = tmpvar.num_value;
             }
         }else if(arguments[1].getType() == alph_number){
-            value2 = std::stoi(arguments[1].getValue());
+            value2 = std::stold(arguments[1].getValue());
         }else{//alph_string
             value2 = arguments[1].getValue();
         }
@@ -318,7 +277,7 @@ namespace alphCMDs{
                 value1 = tmpvar.num_value;
             }
         }else if(arguments[0].getType() == alph_number){
-            value1 = std::stoi(arguments[0].getValue());
+            value1 = std::stold(arguments[0].getValue());
         }else{//alph_string
             value1 = arguments[0].getValue();
         }
@@ -331,7 +290,7 @@ namespace alphCMDs{
                 value2 = tmpvar.num_value;
             }
         }else if(arguments[1].getType() == alph_number){
-            value2 = std::stoi(arguments[1].getValue());
+            value2 = std::stold(arguments[1].getValue());
         }else{//alph_string
             value2 = arguments[1].getValue();
         }

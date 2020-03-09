@@ -1,24 +1,36 @@
 #rendering values
-let xpos 0
-let ypos 0
-let imgwidth 80
+let xpos -1 #-0.7453
+let ypos 1 #0.1127
+let r 2
+
+let imgwidth 160
 let imgheight 20
 
-let minx -2
-let maxx 3
-div maxx 2
-let miny -1
-let maxy 1
+let detail 16
+let maxitter 100
 
+#calculation
+let minx 0
+add minx xpos
+sub minx r
+
+let maxx 0
+add maxx xpos
+add maxx r
+
+let miny 0
+add miny ypos
+sub miny r
+
+let maxy 0
+add maxy ypos
+add maxy r
 #define coordinate variables
 let real 0
 add real minx
 
 let imag 0
 add imag miny
-
-#rendering settings
-let maxitter 100
 
 #create the incrementor, wich defines how 
 #accurate it will render
@@ -30,6 +42,7 @@ div xincrement imgwidth
 let yincrement 0
 add yincrement maxy
 sub yincrement miny
+div yincrement 2
 div yincrement imgheight
 
 goto nextcol
@@ -37,7 +50,8 @@ goto nextcol
 #main nested loop
 :nextrow
 add imag yincrement
-let real -2
+let real 0
+add real minx
 print "\n"
 
 :nextcol
@@ -79,9 +93,6 @@ let bb 2
 mul bb nextimag
 mul bb nextreal
 
-#bb is nextimag
-#aa is nextreal
-
 let nextreal 0
 add nextreal aa
 add nextreal real
@@ -102,9 +113,9 @@ gotoifislss i maxitter comptest_loop
 goto printspace
 
 :printfilled
-print " "
+print "#"
 goto back
 
 :printspace
-print "#"
+print "-"
 goto back
