@@ -9,6 +9,7 @@
 #include <iostream>
 #include <vector>
 #include <string>
+#include <chrono>
 
 #include "headers/interpreter.h"
 #include "headers/getmarkers.h"
@@ -18,16 +19,48 @@
 
 #define VERSION "alpha V2.2.0"
 
-int main(int argc, char** argv)
-{
+uint64_t timeSinceEpochMillisec() {
+  using namespace std::chrono;
+  return duration_cast<milliseconds>(system_clock::now().time_since_epoch()).count();
+}
+
+int main(int argc, char** argv){
+    bool timed = false;
+    
+    //extract argv flags
+    for (int i = 0; i < argc; i++){
+        if (argv[i][0] == '-'){
+            if (strcmp(argv[i], "-t") == 0 || strcmp(argv[i], "--time") == 0 ){
+                timed = true;
+            }
+        }
+    }
+    
     if (argc >= 2){
         if (strcmp(argv[1], "run") == 0){
             if (argc >= 3){
+                uint64_t beginTime, lexTime, valTime, itpTime;
+
+                beginTime = timeSinceEpochMillisec();
                 std::vector<Token> tokens = lexer(readFile(argv[2]));
                 std::map<std::string, int> markers = getMarkers(tokens);
+                lexTime = timeSinceEpochMillisec() - beginTime;
                 
+                beginTime = timeSinceEpochMillisec();
                 validator(tokens);
+                valTime = timeSinceEpochMillisec() - beginTime;
+
+                beginTime = timeSinceEpochMillisec();
                 interpretCode(tokens, markers);
+                itpTime = timeSinceEpochMillisec() - beginTime;
+                if(timed){
+                    std::cout << "\n\n--------run stats--------\n";
+                    std::cout << "lexing:\t\t" << lexTime << " ms\n";
+                    std::cout << "validating:\t" << valTime << " ms\n";
+                    std::cout << "interpreting:\t" << itpTime << " ms\n";
+                    std::cout << "-------------------------";
+                }
+                
                 return 1;
             }else{
                 std::cout << "[ERROR] you need to specify what program to run, for example: alpha run example.ac";
