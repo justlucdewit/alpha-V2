@@ -9,7 +9,10 @@
 #include "../headers/varsys.h"
 
 namespace alphCMDs{
-    void exit(ARGUMENTS){
-        std::exit(std::atoi(arguments[0].getValue().c_str()));
+    void get(ARGUMENTS){
+        Variable value;
+        value.type = alph_string;
+        std::cin >> value.str_value;
+        memory[arguments[0].getValue()] = value;
     }
 }

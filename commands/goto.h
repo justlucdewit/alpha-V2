@@ -9,7 +9,8 @@
 #include "../headers/varsys.h"
 
 namespace alphCMDs{
-    void exit(ARGUMENTS){
-        std::exit(std::atoi(arguments[0].getValue().c_str()));
+    void alph_goto(ARGUMENTS){
+        alphaTools::validateMark(arguments[0].getValue(), markers);
+        currLine = alphaTools::getTokenIndex(markers[arguments[0].getValue()], tokens);
     }
 }

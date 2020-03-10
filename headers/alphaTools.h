@@ -1,3 +1,6 @@
+#ifndef ALPHATOOLS
+#define ALPHATOOLS
+
 #include <map>
 #include <string>
 #include <iostream>
@@ -32,3 +35,5 @@ namespace alphaTools{
         }
     }
 }
+
+#endif

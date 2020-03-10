@@ -4,6 +4,7 @@
 #include <vector>
 #include <map>
 
+#include "../headers/alphaTools.h"
 #include "../headers/tokens.h"
 #include "../headers/varsys.h"
 
