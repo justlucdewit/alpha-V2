@@ -12,12 +12,13 @@
 #include <chrono>
 
 #include "headers/interpreter.h"
+#include "headers/createfiles.h"
 #include "headers/getmarkers.h"
 #include "headers/validator.h"
 #include "headers/readfile.h"
 #include "headers/tokens.h"
 
-#define VERSION "alpha V2.2.0"
+#define VERSION "alpha V2.2.2"
 
 uint64_t timeSinceEpochMillisec() {
   using namespace std::chrono;
@@ -53,6 +54,7 @@ int main(int argc, char** argv){
                 beginTime = timeSinceEpochMillisec();
                 interpretCode(tokens, markers);
                 itpTime = timeSinceEpochMillisec() - beginTime;
+
                 if(timed){
                     std::cout << "\n\n--------run stats--------\n";
                     std::cout << "lexing:\t\t" << lexTime << " ms\n";
@@ -66,12 +68,27 @@ int main(int argc, char** argv){
                 std::cout << "[ERROR] you need to specify what program to run, for example: alpha run example.ac";
                 return 1;
             }
+        }else if (strcmp(argv[1], "make") == 0){
+            if (argc >= 4){
+                char* name = argv[3];
+                if (strcmp(argv[2], "command") == 0){
+                    createFolder(name);
+                }else if(strcmp(argv[2], "project") == 0){
+                    createFolder(name);
+                }
+            }else{
+                std::cout << "[ERROR] to little arguments given for alpha make, see alpha help";
+            }
+            return 1;
         }else if (strcmp(argv[1], "version") == 0){
             std::cout << VERSION;
             return 1;
         }else if (strcmp(argv[1], "help") == 0){
             std::cout << "alpha run [path/to/script.ac]\n";
             std::cout << "\truns a alphacode script\n";
+
+            std::cout << "\nalpha make [type] [name]\n";
+            std::cout << "creates a new project, wich can either be a type of command,\nor project";
 
             std::cout << "\nalpha version\n";
             std::cout << "\tdisplays the current version of alphacode\n";

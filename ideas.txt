@@ -1,15 +1,29 @@
-#math update (v2.2.1)
-add var[int] var[int]
-sub var[int] var[int]
-mul var[int] var[int]
-div var[int] var[int]
-pow var[int] var[int]
-mod var[int] var[int]
+#command ideas:
+	a command to copy some value to a variable
+	cpy {{alph_variable}, {{alph_variable, alph_number, alph_string}}}
+	
+	a command to delete a variable from the memory
+	del {{alph_variable}}
+	
+	a command to concat a value to a variabel
+	cat {{alpha_variable}, {alph_variable, alph_string, alph_number}}
 
-#var minipulation
-cpy var[int] var[int]
-del var
-cat var[str] str/var[str]
+	a command to wait x millisecconds
+	wait {{alph_number, alph_variable}}
 
-gotoifisgtr var[int] var[int] marker
-gotoifislss var[int] var[int] marker
+	a command to read from a file
+	fread {{alph_string, alph_variable}, {alph_string, alph_number, alph_variable}}	
+
+	a command to write to a file
+	fwrite {{alph_string, alph_variable}, {alph_string, alph_number, alph_variable}}
+
+	a command to append to a file
+	fapp {{alph_string, alph_variable}, {alph_string, alph_number, alph_variable}}
+
+#other things:
+	-get support for decimal number declaration
+
+	-get the download page up and running
+
+	=
+	
