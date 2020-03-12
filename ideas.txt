@@ -20,10 +20,16 @@
 	a command to append to a file
 	fapp {{alph_string, alph_variable}, {alph_string, alph_number, alph_variable}}
 
+	a command to set a variable to a random number
+	rand {{alph_variable}}
+
+	a command to convert a string to num
+	tonum {{alph_variable}}
+
 #other things:
 	-get support for decimal number declaration
 
 	-get the download page up and running
 
-	=
+	-split the command fully into headers
 	
