@@ -57,6 +57,10 @@
         "xloctime": "cpp",
         "variant": "cpp",
         "chrono": "cpp",
-        "ratio": "cpp"
+        "ratio": "cpp",
+        "array": "cpp",
+        "deque": "cpp",
+        "sstream": "cpp",
+        "stack": "cpp"
     }
 }

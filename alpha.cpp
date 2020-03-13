@@ -69,6 +69,26 @@ int main(int argc, char** argv){
     alph_commands["let"] = alphCMDs::let;
     alph_commands["get"] = alphCMDs::get;
 
+    std::map<std::string, std::vector<std::vector<Tokentype>>> argData;
+    argData["debug"] = {};
+    argData["more"] = {{alph_variable}};
+    argData["less"] = {{alph_variable}};
+    argData["goto"] = {{alph_variable}};
+    argData["print"] = {{alph_string, alph_variable, alph_number}};
+    argData["get"] = {{alph_variable}};
+    argData["exit"] = {{alph_number, alph_variable}};
+    argData["let"] = {{alph_variable}, {alph_string, alph_number}};
+    argData["gotoifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    argData["gotoifisnt"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    argData["add"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["sub"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["mul"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["div"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["pow"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["mod"] = {{alph_variable}, {alph_variable, alph_number}};
+    argData["gotoifislss"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    argData["gotoifisgtr"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+
     bool timed = false;
     
     //extract argv flags
@@ -89,13 +109,13 @@ int main(int argc, char** argv){
 
                 //lexing
                 beginTime = timeSinceEpochMillisec();
-                std::vector<Token> tokens = lexer(readFile(argv[2]));
+                std::vector<Token> tokens = lexer(readFile(argv[2]), argData);
                 std::map<std::string, int> markers = getMarkers(tokens);
                 lexTime = timeSinceEpochMillisec() - beginTime;
                 
                 //validating
                 beginTime = timeSinceEpochMillisec();
-                validator(tokens);
+                validator(tokens, argData);
                 valTime = timeSinceEpochMillisec() - beginTime;
 
                 //interpreting

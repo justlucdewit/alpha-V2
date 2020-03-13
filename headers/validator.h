@@ -7,28 +7,8 @@
 
 #include "tokens.h"
 
-void validator(std::vector<Token> tokens){
+void validator(std::vector<Token> tokens, std::map<std::string, std::vector<std::vector<Tokentype>>> argData){
     int tokenIndex = 0;
-
-    std::map<std::string, std::vector<std::vector<Tokentype>>> argData;
-    argData["debug"] = {};
-    argData["more"] = {{alph_variable}};
-    argData["less"] = {{alph_variable}};
-    argData["goto"] = {{alph_variable}};
-    argData["print"] = {{alph_string, alph_variable, alph_number}};
-    argData["get"] = {{alph_variable}};
-    argData["exit"] = {{alph_number, alph_variable}};
-    argData["let"] = {{alph_variable}, {alph_string, alph_number}};
-    argData["gotoifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["gotoifisnt"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["add"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["sub"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["mul"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["div"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["pow"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["mod"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["gotoifislss"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["gotoifisgtr"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
 
     while(tokenIndex < tokens.size()){
         //get command

@@ -14,8 +14,8 @@ enum Tokentype{
     alph_unkown
 };
 
-bool isCommand(const std::string str){
-    if (str=="goto"||str=="let"||str=="more"||str=="less"||str=="print"||str=="get"||str=="exit"||str=="debug" || str=="gotoifis" || str=="gotoifisnt" || str=="add" || str=="sub" || str=="mul" || str=="div" || str=="pow" || str=="mod" || str=="gotoifisgtr" || str=="gotoifislss"){
+bool isCommand(const std::string str, std::map<std::string, std::vector<std::vector<Tokentype>>> argData){
+    if (argData.find(str) != argData.end()){
         return true;
     }
     return false;
@@ -115,7 +115,7 @@ std::string substrReplace(std::string data, std::string toSearch, std::string re
     return data;
 }
 
-std::vector<Token> lexer(std::string code){
+std::vector<Token> lexer(std::string code, std::map<std::string, std::vector<std::vector<Tokentype>>> argData){
     std::vector<Token> tokens;
     Token currentToken;
 
@@ -143,7 +143,7 @@ std::vector<Token> lexer(std::string code){
             if (currentChar == ' ' || currentChar == '\n' || i == code.length()){
                 if (currentToken.getValue() != ""){
                     if (currentToken.getType() == alph_unkown){
-                        if (isCommand(currentToken.getValue())){
+                        if (isCommand(currentToken.getValue(), argData)){
                             currentToken.setType(alph_command);
                         }else if(currentToken.getValue()[0] == ':'){
                             currentToken.setType(alph_marker);

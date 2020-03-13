@@ -1,0 +1,14 @@
+ let xpos -1 let ypos 1 let r 2  let imgwidth 160 let imgheight 20  let detail 16 let maxitter 100   
+ let minx 0 add minx xpos sub minx r  let maxx 0 add maxx xpos add maxx r  let miny 0 add miny ypos 
+ sub miny r  let maxy 0 add maxy ypos add maxy r  let real 0 add real minx  let imag 0 add imag miny   
+ let xincrement 0 add xincrement maxx sub xincrement minx div xincrement imgwidth  let yincrement 0 
+ add yincrement maxy sub yincrement miny div yincrement 2 div yincrement imgheight  goto nextcol   
+ :nextrow add imag yincrement let real 0 add real minx print "\n"  :nextcol add real xincrement goto 
+ printnum :back  gotoifislss real maxx nextcol gotoifislss imag maxy nextrow  exit 0   :printnum let i 
+ 0 let z 0 let nextreal 0 let nextimag 0 add nextreal real add nextimag imag :comptest_loop  let aa 0 
+ add aa nextreal mul aa aa  let subaa 0 add subaa nextimag mul subaa subaa  sub aa subaa  let bb 2 mul 
+ bb nextimag mul bb nextreal  let nextreal 0 add nextreal aa add nextreal real  let nextimag 0 add 
+ nextimag bb add nextimag imag  let magnitude 0 add magnitude nextreal add magnitude nextimag  
+ gotoifisgtr magnitude 16 printfilled gotoifislss magnitude -16 printfilled   more i gotoifislss i 
+ maxitter comptest_loop goto printspace  :printfilled print "#" goto back  :printspace print "-" goto 
+ back
