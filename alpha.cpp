@@ -6,6 +6,7 @@
     the language zettacode made by joseph catanzarit
 */
 
+#include <functional>
 #include <iostream>
 #include <vector>
 #include <string>
@@ -14,11 +15,32 @@
 #include "headers/interpreter.h"
 #include "headers/createfiles.h"
 #include "headers/getmarkers.h"
+#include "headers/getconfig.h"
 #include "headers/validator.h"
 #include "headers/readfile.h"
 #include "headers/tokens.h"
+#include "headers/varsys.h"
 
-#define VERSION "alpha V2.2.2"
+#include "commands/gotoifislss.h"
+#include "commands/gotoifisgtr.h"
+#include "commands/gotoifisnt.h"
+#include "commands/gotoifis.h"
+#include "commands/debug.h"
+#include "commands/print.h"
+#include "commands/exit.h"
+#include "commands/more.h"
+#include "commands/goto.h"
+#include "commands/less.h"
+#include "commands/let.h"
+#include "commands/get.h"
+#include "commands/add.h"
+#include "commands/sub.h"
+#include "commands/mul.h"
+#include "commands/div.h"
+#include "commands/pow.h"
+#include "commands/mod.h"
+
+#define VERSION "alpha V2.2.3"
 
 uint64_t timeSinceEpochMillisec() {
   using namespace std::chrono;
@@ -26,6 +48,27 @@ uint64_t timeSinceEpochMillisec() {
 }
 
 int main(int argc, char** argv){
+    std::map<std::string, std::function<void(std::vector<Token>, std::map<std::string, Variable>&, int, int&, std::map<std::string, int>, std::vector<Token>, bool&)> > alph_commands;
+
+    alph_commands["gotoifislss"] = alphCMDs::gotoifislss;
+    alph_commands["gotoifisgtr"] = alphCMDs::gotoifisgtr;
+    alph_commands["gotoifisnt"] = alphCMDs::gotoifisnt;
+    alph_commands["gotoifis"] = alphCMDs::gotoifis;
+    alph_commands["goto"] = alphCMDs::alph_goto;
+    alph_commands["debug"] = alphCMDs::debug;
+    alph_commands["print"] = alphCMDs::print;
+    alph_commands["exit"] = alphCMDs::exit;
+    alph_commands["more"] = alphCMDs::more;
+    alph_commands["less"] = alphCMDs::less;
+    alph_commands["add"] = alphCMDs::add;
+    alph_commands["sub"] = alphCMDs::sub;
+    alph_commands["mul"] = alphCMDs::mul;
+    alph_commands["div"] = alphCMDs::div;
+    alph_commands["pow"] = alphCMDs::pow;
+    alph_commands["mod"] = alphCMDs::mod;
+    alph_commands["let"] = alphCMDs::let;
+    alph_commands["get"] = alphCMDs::get;
+
     bool timed = false;
     
     //extract argv flags
@@ -41,18 +84,23 @@ int main(int argc, char** argv){
         if (strcmp(argv[1], "run") == 0){
             if (argc >= 3){
                 uint64_t beginTime, lexTime, valTime, itpTime;
+                //fetch acconfig
+                getconfig(argv[2]);
 
+                //lexing
                 beginTime = timeSinceEpochMillisec();
                 std::vector<Token> tokens = lexer(readFile(argv[2]));
                 std::map<std::string, int> markers = getMarkers(tokens);
                 lexTime = timeSinceEpochMillisec() - beginTime;
                 
+                //validating
                 beginTime = timeSinceEpochMillisec();
                 validator(tokens);
                 valTime = timeSinceEpochMillisec() - beginTime;
 
+                //interpreting
                 beginTime = timeSinceEpochMillisec();
-                interpretCode(tokens, markers);
+                interpretCode(tokens, markers, alph_commands);
                 itpTime = timeSinceEpochMillisec() - beginTime;
 
                 if(timed){

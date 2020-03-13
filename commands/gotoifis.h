@@ -1,3 +1,5 @@
+#ifndef GOTOIFIS
+#define GOTOIFIS
 #define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int lineNr, int& currLine, std::map<std::string, int> markers, std::vector<Token> tokens, bool& exiting
 
 #include <iostream>
@@ -44,3 +46,4 @@ namespace alphCMDs{
         }
     }
 }
+#endif

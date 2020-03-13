@@ -1,3 +1,5 @@
+#ifndef DIV
+#define DIV
 #define ARGUMENTS std::vector<Token> arguments, std::map<std::string, Variable>& memory, int lineNr, int& currLine, std::map<std::string, int> markers, std::vector<Token> tokens, bool& exiting
 
 #include <iostream>
@@ -26,3 +28,4 @@ namespace alphCMDs{
         memory[arguments[0].getValue()].num_value /= value;
     }
 }
+#endif
