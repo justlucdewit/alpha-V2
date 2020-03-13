@@ -12,6 +12,7 @@
 #include <string>
 #include <chrono>
 
+#include "headers/informtoform.h"
 #include "headers/interpreter.h"
 #include "headers/createfiles.h"
 #include "headers/getmarkers.h"
@@ -20,6 +21,7 @@
 #include "headers/readfile.h"
 #include "headers/tokens.h"
 #include "headers/varsys.h"
+#include "headers/json.h"
 
 #include "commands/gotoifislss.h"
 #include "commands/gotoifisgtr.h"
@@ -40,7 +42,7 @@
 #include "commands/pow.h"
 #include "commands/mod.h"
 
-#define VERSION "alpha V2.2.3"
+#define VERSION "alpha V2.2.4"
 
 uint64_t timeSinceEpochMillisec() {
   using namespace std::chrono;
@@ -70,24 +72,24 @@ int main(int argc, char** argv){
     alph_commands["get"] = alphCMDs::get;
 
     std::map<std::string, std::vector<std::vector<Tokentype>>> argData;
-    argData["debug"] = {};
-    argData["more"] = {{alph_variable}};
-    argData["less"] = {{alph_variable}};
-    argData["goto"] = {{alph_variable}};
-    argData["print"] = {{alph_string, alph_variable, alph_number}};
-    argData["get"] = {{alph_variable}};
-    argData["exit"] = {{alph_number, alph_variable}};
-    argData["let"] = {{alph_variable}, {alph_string, alph_number}};
-    argData["gotoifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["gotoifisnt"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["add"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["sub"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["mul"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["div"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["pow"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["mod"] = {{alph_variable}, {alph_variable, alph_number}};
-    argData["gotoifislss"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
-    argData["gotoifisgtr"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    // argData["debug"] = {};
+    // argData["more"] = {{alph_variable}};
+    // argData["less"] = {{alph_variable}};
+    // argData["goto"] = {{alph_variable}};
+    // argData["print"] = {{alph_string, alph_variable, alph_number}};
+    // argData["get"] = {{alph_variable}};
+    // argData["exit"] = {{alph_number, alph_variable}};
+    // argData["let"] = {{alph_variable}, {alph_string, alph_number}};
+    // argData["gotoifis"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    // argData["gotoifisnt"] ={{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    // argData["add"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["sub"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["mul"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["div"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["pow"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["mod"] = {{alph_variable}, {alph_variable, alph_number}};
+    // argData["gotoifislss"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
+    // argData["gotoifisgtr"] = {{alph_variable, alph_number, alph_string},{alph_variable, alph_number, alph_string}, {alph_variable}};
 
     bool timed = false;
     
@@ -105,11 +107,30 @@ int main(int argc, char** argv){
             if (argc >= 3){
                 uint64_t beginTime, lexTime, valTime, itpTime;
                 //fetch acconfig
-                getconfig(argv[2]);
+                auto config = nlohmann::json::parse(getconfig(argv[2]));
+
+                //temp debug
+                std::cout << argData.size() << " commands loaded\n";
+                for (int i = 0; i < config["commands"].size(); i++){
+                    std::cout << "loading command " << config["commands"][i]["name"] << "\n";
+                    std::string name = config["commands"][i]["name"];
+
+                    argData[name] = {};
+                    for (int arg = 0; arg < config["commands"][i]["args"].size(); arg++){
+                        argData[name].push_back({});
+                        
+                        for (int t = 0; t < config["commands"][i]["args"][arg].size(); t++){
+                            std::cout << "test " << config["commands"][i]["args"][arg][t] << "\n";
+                            argData[name][arg].push_back(informToForm(config["commands"][i]["args"][arg][t]));
+                        }
+                    }
+
+                    std::cout << argData["let"].size();
+                }
 
                 //lexing
                 beginTime = timeSinceEpochMillisec();
-                std::vector<Token> tokens = lexer(readFile(argv[2]), argData);
+                std::vector<Token> tokens = lexer(readFile(argv[2], "could not be opened"), argData);
                 std::map<std::string, int> markers = getMarkers(tokens);
                 lexTime = timeSinceEpochMillisec() - beginTime;
                 

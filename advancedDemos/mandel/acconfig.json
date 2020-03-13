@@ -1,10 +1,16 @@
 {
 	"author":"luc de wit",
 	"version":"v0.0.2",
-	"source":"mandel.ac",
-	
 	"commands":[
-		{"let": "commands/let.dll"},
-		{"goto": "commands/goto.dll"}
+		{
+			"name":"debug",
+			"src": "commands/debug.dll",
+			"args": []
+		},
+		{
+			"name":"let",
+			"src": "commands/let.dll",
+			"args": [["var"], ["str", "num"]]
+		}
 	]
 }

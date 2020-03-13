@@ -32,11 +32,14 @@ void validator(std::vector<Token> tokens, std::map<std::string, std::vector<std:
         //look if command has right amounts of arguments
         if (argData[command.getValue()].size() != arguments.size()){
             std::cout << "[ERROR] wrong number of arguments on " << command.getValue() << " command on line " << command.getLineNumber() << "\n";
+
+            /*
             std::cout << " => " << command.getValue();
 
             for (int i = 0; i < arguments.size(); i++){
                 std::cout << " " << arguments[i].getValue();
             }
+            */
 
             exit(1);
         }

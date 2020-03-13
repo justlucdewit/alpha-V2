@@ -61,6 +61,10 @@
         "array": "cpp",
         "deque": "cpp",
         "sstream": "cpp",
-        "stack": "cpp"
+        "stack": "cpp",
+        "clocale": "cpp",
+        "forward_list": "cpp",
+        "numeric": "cpp",
+        "valarray": "cpp"
     }
 }
